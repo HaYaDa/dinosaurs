@@ -1,13 +1,3 @@
-//import dinoData from './dino.json';
-// works: accessing json-file and the specific content
-/* const dinoData = fetch("./dino.json")
-        .then(response => {
-        return response.json();
-        })
-        .then(data => console.log(data));
-
-console.log(dinoData.data) */
-
 // Create Dino Constructor
 class Dino {
   constructor(species, weight, height, diet, where, when, fact) {
@@ -196,12 +186,6 @@ let humanObject;
     hName, hFeet, hInches, hWeight, hDiet
   )
   console.log(humanObject); 
-  /* DELETE before submit
-        console.log("Human Name=        " + hName); 
-        console.log("Human feet=        " + hFeet);
-        console.log("Human inches=      " + hInches);
-        console.log("Human weight=      " + hWeight);
-        console.log("Human diet=        " + hDiet); */
   console.log("IIFE test log");
 })();
 
@@ -298,10 +282,11 @@ console.log(dinos)
 console.log("tile headline = " + dinos[0].species);
 console.log("tile paragraph = " + dinos[0].fact); 
 
-var tiles;  
-
-for (dinosIndex = 0; dinosIndex < 8; dinosIndex++) {
-  // create elements for the tiles
+var tiles = [];  
+tilesFunction = () => {
+  for (dinosIndex = 0; dinosIndex < 8; dinosIndex++) {
+  // create elements for the tiles & grab elements
+  
   const tile = document.createElement("div");
   const tileHeadline = document.createElement("h3");
   const tileImg = document.createElement("img");
@@ -341,16 +326,99 @@ for (dinosIndex = 0; dinosIndex < 8; dinosIndex++) {
   tile.appendChild(tileImg);
   tile.appendChild(tilePara); 
   console.log(tile)
-  tiles = tile; 
+  document.getElementById('grid').appendChild(tile); 
+  }
+  
 }
+
 
 // On button click, prepare and display infographic
 submitHandler = () => {
   // Remove form from screen
   document.getElementById("dino-compare").classList.add("hide-form"); 
-  // Add tiles to DOM
-  document.getElementById("grid").appendChild(tiles);
+  // Add tiles to DOM (invoke the function for creating and adding tiles)
+  tilesFunction(); 
+  // creating human tile elements 
+  let grid = document.getElementById("grid");
+  let hTile = document.createElement("div"); 
+  let hHeader = document.createElement('h3');
+  let hImage = document.createElement("img"); 
+  
+  // create content of elements in human tile
+  hHeader.innerHTML = humanObject.name; 
+  hImage.setAttribute("src", `./images/human.png`);
+  hTile.classList.add("grid-item"); 
+  // appending elements to human tile
+  hTile.appendChild(hHeader);
+  hTile.appendChild(hImage);
+  // append human tile to the grid
+  console.log(hTile); 
+  grid.appendChild(hTile); 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -360,6 +428,16 @@ submitHandler = () => {
 
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 */
+
+//import dinoData from './dino.json';
+// works: accessing json-file and the specific content
+/* const dinoData = fetch("./dino.json")
+        .then(response => {
+        return response.json();
+        })
+        .then(data => console.log(data));
+
+console.log(dinoData.data) */
 
 // Chech this loop - works good for now
 /* for (let i = 0; i < 50; i++) {
