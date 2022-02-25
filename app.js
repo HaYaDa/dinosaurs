@@ -185,8 +185,6 @@ let humanObject;
   humanObject = new Human(
     hName, hFeet, hInches, hWeight, hDiet
   )
-  console.log(humanObject); 
-  console.log("IIFE test log");
 })();
 
 // lbs to kg ==> lbs * 0.45359237 kg
@@ -233,8 +231,6 @@ Dino.prototype.weightComp = function () {
   }
 };
 
-
-
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
@@ -278,10 +274,6 @@ randomFact = () =>{
 
 
 // Generate Tiles for each Dino in Array
-console.log(dinos)
-console.log("tile headline = " + dinos[0].species);
-console.log("tile paragraph = " + dinos[0].fact); 
-
 var tiles = [];  
 tilesFunction = () => {
   for (dinosIndex = 0; dinosIndex < 8; dinosIndex++) {
