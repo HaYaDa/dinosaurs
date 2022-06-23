@@ -163,55 +163,104 @@ const dinos = [
 
 // Create Human Object
 class Human {
-  constructor(name, feet, inches, weight, diet) {
+  constructor(name, feet, inches, weight, diet, fact) {
+    this.species = "human"; 
     this.name = name;
     this.feet = feet;
     this.inches = inches;
     this.weight = weight;
     this.diet = diet;
+    this.fact = "I'm human"; 
   }
 }
 
-// Use IIFE to get human data from form
-let humanObject;
 
-(function () {
-  let hName = document.getElementById("name").value;
-  let hFeet = document.getElementById("feet").value;
-  let hInches = document.getElementById("inches").value;
-  let hWeight = document.getElementById("weight").value;
-  let hDiet = document.getElementById("diet").value;
+// Generate Tiles for each Dino in Array
+var tiles = [];  
+tilesFunction = () => {
 
-  humanObject = new Human(
-    hName, hFeet, hInches, hWeight, hDiet
-  )
-})();
+  for (let dinosIndex = 0; dinosIndex <= 8; dinosIndex++) {
+    
+/*     if (dinosIndex > 4){
+      dinosIndex = dinosIndex + 1;
+    }  */ 
 
-// lbs to kg ==> lbs * 0.45359237 kg
-// inches to metric ==> inches * 0.0254 m / or 2.54 cm
-// feet to metric ==> feet * 0.3048 m / or 30.48 cm
-// feet to inches ==> feet * 12 inch
-// inches to feet ==> inches * 0.0833333333 foot
+  // create elements for the tiles & grab elements
+  
+  const tile = document.createElement("div");
+  const tileHeadline = document.createElement("h3");
+  const tileImg = document.createElement("img");
+  const tilePara = document.createElement("p");
 
-// Helper functions for conversion feet/inches
-// autocomplete height data with onchange property
-convFeet2Inch = () => {
-  // get data from form
-  let hFeet = document.getElementById("feet").value;
-  let hInches = document.getElementById("inches");
-  let conv = hFeet * 12;
-  console.log("conv = " + conv);
-  return (hInches.value = conv);
-};
+  let randomize = dinos[dinosIndex].species === "Pigeon" ? 5 : randomFact(); 
+  
+  if (dinos[dinosIndex].species !== "human") {
+    switch (randomize) {
+      case 0:
+        dinos[dinosIndex].fact = dinos[dinosIndex].weightComp();
+        break;
+      case 1:
+        dinos[dinosIndex].fact = dinos[dinosIndex].heightComp();
+        break;
+      case 2:
+        dinos[dinosIndex].fact = dinos[dinosIndex].dietComp(); 
+        break;
+      case 3: 
+      dinos[dinosIndex].fact = `The ${dinos[dinosIndex].species} lived in ${dinos[dinosIndex].where}`;
+        break;
+      case 4:
+        dinos[dinosIndex].fact = `The ${dinos[dinosIndex].species} lived in the ${dinos[dinosIndex].when}`;
+        break;
+      case 5: 
+      fact = dinos[dinosIndex].fact
+    }
+  } else {
+    fact = "Im human";
+    console.log("facttest") 
+  }
 
-convInch2Feet = () => {
-  // get data from form
-  let hInches = document.getElementById("inches").value;
-  let hFeet = document.getElementById("feet");
-  let conv = hInches * (0.0833333333).toFixed(2);
-  console.log("conv = " + conv);
-  return (hFeet.value = conv);
-};
+  if (dinos[dinosIndex].species === "human") {
+    tileImg.setAttribute("src", `./images/human.png` )
+    
+  } else {
+    tileImg.setAttribute("src", `./images/${dinosIndex}.png`);
+  }
+
+
+
+  // create content for the elements in the tiles
+  tileHeadline.innerHTML = dinos[dinosIndex].species;
+  tilePara.innerText = dinos[dinosIndex].fact; 
+
+  // adding pre-defined css-classes to created tile elements
+  tile.classList.add("grid-item");
+  // appending elements to the tiles
+  tile.appendChild(tileHeadline);
+  tile.appendChild(tileImg);
+  tile.appendChild(tilePara); 
+  console.log(tile)
+  document.getElementById('grid').appendChild(tile); 
+
+  
+  
+
+  }
+  
+}
+
+// Create Dino Compare Method 3
+// NOTE: Weight in JSON file is in lbs, height in inches.
+
+Dino.prototype.dietComp = function () {
+  let hDiet = document.getElementById("diet").value.toLowerCase();
+  let diet = ( hDiet === this.diet ) ? `You are ${hDiet} & ${this.species} was ${this.diet} too...` : `You are a ${hDiet}, but ${this.species} was a ${this.diet}`; 
+  return diet; 
+}
+
+// Create function for generate random number for the tiles
+randomFact = () =>{
+return Math.floor(Math.random() * (7 + 1));
+}
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -249,19 +298,73 @@ Dino.prototype.heightComp = function () {
   }
 };
 
-// Create Dino Compare Method 3
-// NOTE: Weight in JSON file is in lbs, height in inches.
 
-Dino.prototype.dietComp = function () {
-    let hDiet = document.getElementById("diet").value.toLowerCase();
-    let diet = ( hDiet === this.diet ) ? `You are ${hDiet} & ${this.species} was ${this.diet} too...` : `You are a ${hDiet}, but ${this.species} was a ${this.diet}`; 
-    return diet; 
-}
+// Use IIFE to get human data from form
+let humanObject;
 
-// Create function for generate random number for the tiles
-randomFact = () =>{
-  return Math.floor(Math.random() * (7 - 0 + 1)) + 0;
-}
+(function () {
+  let hName = document.getElementById("name").value;
+  let hFeet = document.getElementById("feet").value;
+  let hInches = document.getElementById("inches").value;
+  let hWeight = document.getElementById("weight").value;
+  let hDiet = document.getElementById("diet").value;
+  
+
+  humanObject = new Human(
+    hName, hFeet, hInches, hWeight, hDiet
+  )
+
+  const toIndex = Math.floor((dinos.length+1)/2);
+  dinos.splice(toIndex, 0, humanObject); 
+  //tilesFunction(); 
+})();
+
+
+/* const arr = ['css', 'js', 'ts'];
+
+const fromIndex = arr.indexOf('css'); // 👉 0
+const toIndex = 2;
+
+const element = arr.splice(fromIndex, 1)[0];
+console.log(element); // ['css']
+
+arr.splice(toIndex, 0, element);
+
+console.log(arr); // 👉 ['js', 'ts', 'css'] */
+
+
+const toIndex = Math.floor(dinos.length+1/2);
+dinos.splice(toIndex, 0, humanObject); 
+
+// lbs to kg ==> lbs * 0.45359237 kg
+// inches to metric ==> inches * 0.0254 m / or 2.54 cm
+// feet to metric ==> feet * 0.3048 m / or 30.48 cm
+// feet to inches ==> feet * 12 inch
+// inches to feet ==> inches * 0.0833333333 foot
+
+// Helper functions for conversion feet/inches
+// autocomplete height data with onchange property
+convFeet2Inch = () => {
+  // get data from form
+  let hFeet = document.getElementById("feet").value;
+  let hInches = document.getElementById("inches");
+  let conv = hFeet * 12;
+  console.log("conv = " + conv);
+  return (hInches.value = conv);
+};
+
+convInch2Feet = () => {
+  // get data from form
+  let hInches = document.getElementById("inches").value;
+  let hFeet = document.getElementById("feet");
+  let conv = hInches * (0.0833333333).toFixed(2);
+  console.log("conv = " + conv);
+  return (hFeet.value = conv);
+};
+
+
+
+
 
  //
 
@@ -273,62 +376,11 @@ randomFact = () =>{
 
 
 
-// Generate Tiles for each Dino in Array
-var tiles = [];  
-tilesFunction = () => {
-  for (dinosIndex = 0; dinosIndex < 8; dinosIndex++) {
-  // create elements for the tiles & grab elements
-  
-  const tile = document.createElement("div");
-  const tileHeadline = document.createElement("h3");
-  const tileImg = document.createElement("img");
-  const tilePara = document.createElement("p");
-
-  let randomize = dinos[dinosIndex].species === "Pigeon" ? 5 : randomFact(); 
-
-  switch (randomize) {
-    case 0:
-      fact = dinos[dinosIndex].weightComp();
-      break;
-    case 1:
-      fact = dinos[dinosIndex].heightComp();
-      break;
-    case 2:
-      fact = dinos[dinosIndex].dietComp(); 
-      break;
-    case 3: 
-      fact = `The ${dinos[dinosIndex].species} lived in ${dinos[dinosIndex].where}`;
-      break;
-    case 4:
-      fact = `The ${dinos[dinosIndex].species} lived in the ${dinos[dinosIndex].when}`;
-      break;
-    case 5: 
-      fact = dinos[dinosIndex].fact
-  }
-
-  // create content for the elements in the tiles
-  tileHeadline.innerHTML = dinos[dinosIndex].species;
-  tileImg.setAttribute("src", `./images/${dinosIndex}.png`);
-  tilePara.innerText = fact; 
-
-  // adding pre-defined css-classes to created tile elements
-  tile.classList.add("grid-item");
-  // appending elements to the tiles
-  tile.appendChild(tileHeadline);
-  tile.appendChild(tileImg);
-  tile.appendChild(tilePara); 
-  console.log(tile)
-  document.getElementById('grid').appendChild(tile); 
-  }
-  
-}
-
-
 // On button click, prepare and display infographic
 submitHandler = () => {
   // Remove form from screen
   document.getElementById("dino-compare").classList.add("hide-form"); 
-  // Add tiles to DOM (invoke the function for creating and adding tiles)
+  /* // Add tiles to DOM (invoke the function for creating and adding tiles)
   tilesFunction(); 
   // creating human tile elements 
   let grid = document.getElementById("grid");
@@ -345,7 +397,9 @@ submitHandler = () => {
   hTile.appendChild(hImage);
   // append human tile to the grid
   console.log(hTile); 
-  grid.appendChild(hTile); 
+  grid.appendChild(hTile);  */
+  // Add tiles to DOM (invoke the function for creating and adding tiles)
+  tilesFunction(); 
 }
 
 
